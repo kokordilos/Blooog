@@ -8,12 +8,7 @@ include	'/views/header.php';
 
 
 include '/views/footer.php';
-
-/*^this is all u need in index so far
-fix all pages and register
-make the header and footer to look like a shitty page to start :P*/
 ?>
-
 
 
 

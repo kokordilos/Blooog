@@ -1,7 +1,8 @@
 
 <?php
 
-
+date_default_timezone_set('Europe/Moscow');
+$date = date('Y-m-d H:i:s');
 session_start();
 
 include '/connect_prop.php';
@@ -19,21 +20,31 @@ if(!empty($_POST["logout"])) {
     header("LOCATION: /php_tut/?page=login");
 }
 
-var_dump($row);
-  
-
-
-
-
 
 ?>
-<h3>user page</h3>
+<h3>Comments</h3>
+
 <form action="" method="post" id="frmLogout">
-<div class="member-dashboard">Welcome <?php echo ucwords($row['name']); ?>, 
+<div class= "dashboard">
+<div class= "left_user_list">
+<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
+
+
+</div>
+<div class="user_dashboard">
+
+
+<div class="profile_info">
+
+Welcome <?php echo ucwords($row['name']); ?>,
 You have successfully logged in!<br>
 Click to 
 <input type="submit" name="edit" value="Edit" >
 <input type="submit" name="logout" value="Logout" >.
+
 <?php
 if(!empty($_POST["edit"])) {
     
@@ -76,5 +87,46 @@ if(!empty($_POST["edit"])) {
 
 */
 ?>
+</div>
+<!--Comment part here-->
+
+<div class= "comment_dashboard">
+
+<div class="comment">
+
+</div>
+</div>
+<!--Comment part here-->
+
+<!--Post part here-->
+
+<div class= "post_comment">
+<input class= "msg" type= "text" name= "new_comment">
+<input type="submit" name="post" value="Post" >
+
+
+<?php
+    
+    
+if(!empty($_POST["post"])){
+    
+   // $date = ($date);
+    $post = "INSERT INTO `comment` (`id`, `user_id`, `comment`, `date`) 
+    VALUES (NULL,'" . $_SESSION["id"] . "', '" . $_POST["new_comment"] . "', '" . $date . "')";    
+    $conn->exec($post);
+   
+    //echo "By "; echo ucwords($row['name']); echo " "; echo  $date;
+
+}
+?>
+
+
+
+</div>
+<!--Post part here-->
+
+
+</div>
+
 </div>
 </form>
