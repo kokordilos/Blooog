@@ -24,10 +24,16 @@
     border-top-style: solid;
     border-top-width: 2px;
 }
-.comment{
-    
+.comment_detail{
+    display: flex;
 }
-
+.comment_username{
+    flex-grow: 1;
+    float: left;
+}
+.comment_date{
+    flex-grow: 1;
+}
 
 .post_comment{
     width: 100%;

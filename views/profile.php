@@ -7,11 +7,21 @@ session_start();
 
 include '/connect_prop.php';
 
-$sql = "SELECT u.*, p.* FROM users AS u INNER JOIN profile AS p ON u.id = p.user_id WHERE u.id = ". $_SESSION["id"]; 
+$sql_users = "SELECT u.*, p.* FROM users AS u INNER JOIN profile AS p ON u.id = p.user_id WHERE u.id = ". $_SESSION["id"]; 
 
-$result = $conn->prepare( $sql ); 
-$result -> execute();
-$row  = $result->fetch(PDO::FETCH_ASSOC);
+
+
+$result_users = $conn->prepare( $sql_users ); 
+$result_users -> execute();
+$row_users  = $result_users->fetch(PDO::FETCH_ASSOC);
+
+$sql_comments = "SELECT * FROM `comment`";
+
+
+$result_comments = $conn->prepare($sql_comments);
+$result_comments -> execute();
+
+
 
 
 if(!empty($_POST["logout"])) {
@@ -27,10 +37,10 @@ if(!empty($_POST["logout"])) {
 <form action="" method="post" id="frmLogout">
 <div class= "dashboard">
 <div class= "left_user_list">
-<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
+<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
 
 
 </div>
@@ -39,7 +49,7 @@ if(!empty($_POST["logout"])) {
 
 <div class="profile_info">
 
-Welcome <?php echo ucwords($row['name']); ?>,
+Welcome <?php echo ucwords($row_users['name']); ?>,
 You have successfully logged in!<br>
 Click to 
 <input type="submit" name="edit" value="Edit" >
@@ -50,12 +60,12 @@ if(!empty($_POST["edit"])) {
     
     
     ?>  
-    <div>name<input name="name" type="text"  value = "<?= $row['name'] ?>"> </div>
-	<div>email<input name="email" type="text"  value = "<?= $row['email'] ?>"> </div>
-    <div>password<input name="pass" type="password"  value = "<?= $row['pass'] ?>"></div>
-    <div>picture<input name="picture" type="text"  value = "<?= $row['picture'] ?>"> </div>
-    <div>iq<input name="iq" type="text"  value = "<?= $row['iq'] ?>"> </div>
-    <div>age<input name="age" type="text"  value = "<?= $row['age'] ?>"> </div>
+    <div>name<input name="name" type="text"  value = "<?= $row_users['name'] ?>"> </div>
+	<div>email<input name="email" type="text"  value = "<?= $row_users['email'] ?>"> </div>
+    <div>password<input name="pass" type="password"  value = "<?= $row_users['pass'] ?>"></div>
+    <div>picture<input name="picture" type="text"  value = "<?= $row_users['picture'] ?>"> </div>
+    <div>iq<input name="iq" type="text"  value = "<?= $row_users['iq'] ?>"> </div>
+    <div>age<input name="age" type="text"  value = "<?= $row_users['age'] ?>"> </div>
 
     <div><input type="submit" name="save" value="Save"></div>  
     <?php
@@ -82,20 +92,47 @@ if(!empty($_POST["edit"])) {
     
     }
     
-/*
 
-
-*/
 ?>
 </div>
 <!--Comment part here-->
 
 <div class= "comment_dashboard">
 
-<div class="comment">
 
-</div>
-</div>
+
+
+
+
+
+<?php
+
+
+
+
+while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
+{
+    echo '
+        <div class="comment">
+            <div class="comment_text">
+                '.$row_comments["comment"].
+         '  </div>
+        <div class="comment_detail">
+            <div class="comment_username">
+                '.$row_comments["user_id"].
+         '  </div>
+            <div class="comment_date">
+                '.$row_comments["date"].
+         '  </div>
+        </div>
+    </div>
+
+    ';
+}
+
+?>
+
+</div> 
 <!--Comment part here-->
 
 <!--Post part here-->
@@ -114,6 +151,7 @@ if(!empty($_POST["post"])){
     $post = "INSERT INTO `comment` (`id`, `user_id`, `comment`, `date`) 
     VALUES (NULL,'" . $_SESSION["id"] . "', '" . $_POST["new_comment"] . "', '" . $date . "')";    
     $conn->exec($post);
+    header("Refresh:0");
    
     //echo "By "; echo ucwords($row['name']); echo " "; echo  $date;
 
