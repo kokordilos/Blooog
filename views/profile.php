@@ -1,23 +1,26 @@
 
 <?php
 
-date_default_timezone_set('Europe/Moscow');
-$date = date('Y-m-d H:i:s');
+
 session_start();
 
 include '/connect_prop.php';
 
 $sql_users = "SELECT u.*, p.* FROM users AS u INNER JOIN profile AS p ON u.id = p.user_id WHERE u.id = ". $_SESSION["id"]; 
-
-
-
 $result_users = $conn->prepare( $sql_users ); 
 $result_users -> execute();
-$row_users  = $result_users->fetch(PDO::FETCH_ASSOC);
-
-$sql_comments = "SELECT * FROM `comment`";
+$row_users = $result_users->fetch(PDO::FETCH_ASSOC);
 
 
+$sql_pictures = "SELECT * FROM `profile` ORDER BY `id`ASC ";
+$result_pictures =$conn->prepare($sql_pictures);
+$result_pictures -> execute();
+
+
+
+
+
+$sql_comments = "SELECT * FROM `comment` ORDER BY `id`ASC ";
 $result_comments = $conn->prepare($sql_comments);
 $result_comments -> execute();
 
@@ -34,13 +37,18 @@ if(!empty($_POST["logout"])) {
 ?>
 <h3>Comments</h3>
 
-<form action="" method="post" id="frmLogout">
 <div class= "dashboard">
 <div class= "left_user_list">
-<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
-<img src= "<?= $row_users['picture'] ?>" style="width:100;height:100px;">
+<?php
+
+while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
+{
+    
+    echo '<img src='.$row_pictures['picture'].' style="width:100;height:100px;">';
+}
+
+?>
+
 
 
 </div>
@@ -52,9 +60,11 @@ if(!empty($_POST["logout"])) {
 Welcome <?php echo ucwords($row_users['name']); ?>,
 You have successfully logged in!<br>
 Click to 
+<form action="" method="post" id="frmLogout">
+
 <input type="submit" name="edit" value="Edit" >
 <input type="submit" name="logout" value="Logout" >.
-
+</form>
 <?php
 if(!empty($_POST["edit"])) {
     
@@ -112,59 +122,38 @@ if(!empty($_POST["edit"])) {
 
 while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 {
-    echo '
-        <div class="comment">
-            <div class="comment_text">
-                '.$row_comments["comment"].
-         '  </div>
-        <div class="comment_detail">
-            <div class="comment_username">
-                '.$row_comments["user_id"].
-         '  </div>
-            <div class="comment_date">
-                '.$row_comments["date"].
-         '  </div>
-        </div>
-    </div>
-
-    ';
+    
+    
+    echo    '<div class="comment">
+                        <div class="comment_text">
+                            '.$row_comments["comment"].
+                        '</div>
+                <div class="comment_detail">
+                    <div class="comment_username">
+                        '.$row_comments["user_id"].
+                    '</div>
+                    <div class="comment_date">
+                        '.$row_comments["date"].
+                    '</div>
+                </div>
+            </div>';
 }
-
 ?>
-
 </div> 
 <!--Comment part here-->
 
-<!--Post part here-->
 
+
+<!--Post part here-->
 <div class= "post_comment">
-<input class= "msg" type= "text" name= "new_comment">
-<input type="submit" name="post" value="Post" >
-
-
-<?php
-    
-    
-if(!empty($_POST["post"])){
-    
-   // $date = ($date);
-    $post = "INSERT INTO `comment` (`id`, `user_id`, `comment`, `date`) 
-    VALUES (NULL,'" . $_SESSION["id"] . "', '" . $_POST["new_comment"] . "', '" . $date . "')";    
-    $conn->exec($post);
-    header("Refresh:0");
-   
-    //echo "By "; echo ucwords($row['name']); echo " "; echo  $date;
-
-}
-?>
-
-
-
+<form action="post_redirect.php" method="POST">
+    <input class= "msg" type= "text" name= "new_comment">
+    <input type="submit" name="submit" >
+</form>
 </div>
 <!--Post part here-->
 
 
-</div>
 
 </div>
-</form>
+</div>

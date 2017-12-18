@@ -1,5 +1,6 @@
 .dashboard{
     display: flex;
+    height: 100%;
 }
 .left_user_list {
     width: 100px;
@@ -9,20 +10,25 @@
     border-right-width: 2px;
 }
 .user_dashboard{
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .profile_info {
     padding-left: 30px;
 }
 .comment_dashboard {
-    
+    background-color: grey;
     width: 100%;
+    height: 100%;
     padding-top: 30px;
     padding-left: 30px;
     margin-top: 25px;
     border-top-style: solid;
     border-top-width: 2px;
+    
+    overflow-y: auto;
 }
 .comment_detail{
     display: flex;
@@ -37,11 +43,9 @@
 
 .post_comment{
     width: 100%;
-    position: absolute; 
-    bottom: 0px;
+    
     padding-top: 30px;
     padding-left: 30px;
-    margin-top: 25px;
     border-top-style: solid;
     border-top-width: 2px;
 }
