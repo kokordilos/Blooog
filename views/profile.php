@@ -35,6 +35,7 @@ if(!empty($_POST["logout"])) {
 
 
 ?>
+
 <h3>Comments</h3>
 
 <div class= "dashboard">
@@ -69,7 +70,8 @@ Click to
 if(!empty($_POST["edit"])) {
     
     
-    ?>  
+    ?> 
+    <form action="save.php" method="POST"> 
     <div>name<input name="name" type="text"  value = "<?= $row_users['name'] ?>"> </div>
 	<div>email<input name="email" type="text"  value = "<?= $row_users['email'] ?>"> </div>
     <div>password<input name="pass" type="password"  value = "<?= $row_users['pass'] ?>"></div>
@@ -77,30 +79,12 @@ if(!empty($_POST["edit"])) {
     <div>iq<input name="iq" type="text"  value = "<?= $row_users['iq'] ?>"> </div>
     <div>age<input name="age" type="text"  value = "<?= $row_users['age'] ?>"> </div>
 
-    <div><input type="submit" name="save" value="Save"></div>  
+    <input type="submit" name="save" value="Save"> 
+    </form>
     <?php
 
     }
-    if(!empty($_POST["save"])){
 
-    $prof_upd = "UPDATE `profile` SET 
-        `picture`= '".$_POST['picture']."',
-        `iq`= '".$_POST['iq']."',
-        `name`= '".$_POST['name']."',
-        `age`= '".$_POST['age']."'
-        WHERE `user_id`=  '".$_SESSION['id'] ."'
-        ";
-    $user_upd = "UPDATE `users` SET 
-        `email`= '".$_POST['email']."',
-        `pass`= '".$_POST['pass']."'        
-        WHERE `id`=  '".$_SESSION['id'] ."'
-        ";
-        
-        $conn->exec($prof_upd);
-        $conn->exec($user_upd);
-        header("LOCATION: /php_tut/?page=profile");
-    
-    }
     
 
 ?>
@@ -157,3 +141,4 @@ while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 
 </div>
 </div>
+

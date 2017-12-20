@@ -4,6 +4,6 @@
 
 </head>
 <body>
-    
+<div class= "fullview">     
 titties
 <hr>
