@@ -17,9 +17,6 @@ $result_pictures =$conn->prepare($sql_pictures);
 $result_pictures -> execute();
 
 
-
-
-
 $sql_comments = "SELECT * FROM `comment` ORDER BY `id`ASC ";
 $result_comments = $conn->prepare($sql_comments);
 $result_comments -> execute();
@@ -45,7 +42,7 @@ if(!empty($_POST["logout"])) {
 while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 {
     
-    echo '<img src='.$row_pictures['picture'].' style="width:100;height:100px;">';
+    echo '<div class="image_box"><img class="profile_img" src='.$row_pictures['picture'].' ></div>';
 }
 
 ?>
@@ -96,7 +93,7 @@ if(!empty($_POST["edit"])) {
 
 
 
-
+<div class= "comment_area">
 
 
 <?php
@@ -106,35 +103,38 @@ if(!empty($_POST["edit"])) {
 
 while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 {
-    
+    $index = $row_comments["user_id"];
     
     echo    '<div class="comment">
                         <div class="comment_text">
                             '.$row_comments["comment"].
-                        '</div>
+                        '</div> 
                 <div class="comment_detail">
                     <div class="comment_username">
-                        '.$row_comments["user_id"].
+                        by_'.$sql_users[$index].
                     '</div>
                     <div class="comment_date">
                         '.$row_comments["date"].
                     '</div>
-                </div>
+                </div><hr>
             </div>';
 }
 ?>
+</div>
 </div> 
 <!--Comment part here-->
 
 
 
 <!--Post part here-->
-<div class= "post_comment">
+
 <form action="post_redirect.php" method="POST">
-    <input class= "msg" type= "text" name= "new_comment">
-    <input type="submit" name="submit" >
-</form>
+<div class= "post_comment">
+    <div class= "msg_box"><input class= "msg"  type= "text" name= "new_comment"></div>
+    <div class= "submit_btn"> <input type="submit" name="submit" > </div>
 </div>
+</form>
+
 <!--Post part here-->
 
 

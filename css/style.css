@@ -1,67 +1,96 @@
+.header{
+    background-color: red;
+}
+.footer{
+    background-color: red;
 
-
+}
 .fullview
 {
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;    
 }
-
-
-.dashboard{
-        display: flex;    
-        height: 100%;
+.dashboard {
+    display: flex;    
+    height: auto;
 }
 .left_user_list {
-    width: 100px;
-    height:100%;
-    padding-right: 30px;
+    width: 20%;
     float: left;   
     border-right-style: solid;
     border-right-width: 2px;
-}
-.user_dashboard{
     display: flex;
-    height:100%;
+    flex-direction: column;
+}
+
+.image_box{
+    width: 90%;
+    height: 20vw;    
+    padding-bottom: 6px;
+}
+.profile_img{
+    border-style: solid;
+    border-width: 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.user_dashboard{
+    width: 80%;
+    display: flex;
     flex-direction: column;
   
 }
 
 .profile_info {
     padding-left: 30px;
-    height: 12%;
-  
+    height: 12%;  
 }
 .comment_dashboard {
     background-color: grey;
-    width: 100%;
-   height: 80%;
-    padding-top: 30px;
-    padding-left: 30px;
-    margin-top: 25px;
-    border-top-style: solid;
-    border-top-width: 2px;
     
-    overflow-y: scroll;
+    height: 75%;
+    margin-top: 25px;
+    width: 100%;
+    border-top-style: solid;
+    border-top-width: 2px;    
+    overflow-y: auto;
+}
+
+.comment_area{
+    margin:30px;
 }
 .comment_detail{
     display: flex;
 }
 .comment_username{
+    font-size: 15px;
+    color: white;
     flex-grow: 1;
     float: left;
 }
 .comment_date{
+    color: white;
     flex-grow: 1;
+    font-size: 15px;
 }
 
 .post_comment{
+    display: flex;
     height: 8%;
     width: 100%;    
-    padding-top: 30px;
-    padding-left: 30px;
+    padding-top: 20px;
     border-top-style: solid;
     border-top-width: 2px;
 }
+.msg_box{
+    padding-left: 20px;
+    height: 100%;
+}
 .msg{
-    
-    width: 300px;
+    height:100%;
+}
+.submit_btn{
 }
