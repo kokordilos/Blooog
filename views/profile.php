@@ -103,16 +103,19 @@ if(!empty($_POST["edit"])) {
 
 while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 {
-    $index = $row_comments["user_id"];
-    
+    $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
+    $comment_user = $conn->prepare( $comment_user )  ;
+    $comment_user -> execute();
+    $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
+
     echo    '<div class="comment">
                         <div class="comment_text">
                             '.$row_comments["comment"].
                         '</div> 
                 <div class="comment_detail">
                     <div class="comment_username">
-                        by_'.$sql_users[$index].
-                    '</div>
+                        by_'; echo ucwords( $comment_user["name"] );
+                        echo '</div>
                     <div class="comment_date">
                         '.$row_comments["date"].
                     '</div>
