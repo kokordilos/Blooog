@@ -42,7 +42,7 @@ if(!empty($_POST["logout"])) {
 while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 {
     
-    echo '<div class="image_box"><img class="profile_img" src='.$row_pictures['picture'].' ></div>';
+    echo '<div class="image_box"><a class="profile_img_link" href=""><img class="profile_img" src='.$row_pictures['picture'].' ></a></div>';
 }
 
 ?>
