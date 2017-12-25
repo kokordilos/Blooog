@@ -37,12 +37,13 @@ if(!empty($_POST["logout"])) {
 
 <div class= "dashboard">
 <div class= "left_user_list">
+
 <?php
 
 while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 {
     
-    echo '<div class="image_box"><a class="profile_img_link" href=""><img class="profile_img" src='.$row_pictures['picture'].' ></a></div>';
+    echo '<div class="image_box"><form action="select_comments.php" method="POST"><button class="img_button" type = "submit" name = "select" ><img  class="profile_img" tabindex="1" src='.$row_pictures['picture'].' ></button></from></div>';
 }
 
 ?>
@@ -58,7 +59,7 @@ while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 Welcome <?php echo ucwords($row_users['name']); ?>,
 You have successfully logged in!<br>
 Click to 
-<form action="" method="post" id="frmLogout">
+<form action="" method="post" >
 
 <input type="submit" name="edit" value="Edit" >
 <input type="submit" name="logout" value="Logout" >.
@@ -99,28 +100,32 @@ if(!empty($_POST["edit"])) {
 <?php
 
 
-
+//
 
 while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 {
-    $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
-    $comment_user = $conn->prepare( $comment_user )  ;
-    $comment_user -> execute();
-    $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
+    if($row_comments["user_id"] == 3)
+    {
+        $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
+        $comment_user = $conn->prepare( $comment_user )  ;
+        $comment_user -> execute();
+        $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
 
-    echo    '<div class="comment">
-                        <div class="comment_text">
-                            '.$row_comments["comment"].
-                        '</div> 
-                <div class="comment_detail">
-                    <div class="comment_username">
-                        by_'; echo ucwords( $comment_user["name"] );
-                        echo '</div>
-                    <div class="comment_date">
-                        '.$row_comments["date"].
-                    '</div>
-                </div><hr>
-            </div>';
+        echo    '<div class="comment">
+                            <div class="comment_text">
+                                '.$row_comments["comment"].
+                            '</div> 
+                    <div class="comment_detail">
+                        <div class="comment_username">
+                            by_'; echo ucwords( $comment_user["name"] );
+                            echo '</div>
+                        <div class="comment_date">
+                            '.$row_comments["date"].
+                        '</div>
+                    </div><hr>
+                </div>';
+    }
+    
 }
 ?>
 </div>
