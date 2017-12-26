@@ -40,10 +40,19 @@ if(!empty($_POST["logout"])) {
 
 <?php
 
+
+
 while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 {
     
-    echo '<div class="image_box"><form action="select_comments.php" method="POST"><button class="img_button" type = "submit" name = "select" ><img  class="profile_img" tabindex="1" src='.$row_pictures['picture'].' ></button></from></div>';
+    echo '<div class="image_box">
+    
+    <a type = "submit" href = "?page=profile&id='. $row_pictures['user_id'] .'">
+    <img  class="profile_img" tabindex="1" src='.$row_pictures['picture'].' >
+    </a>
+    
+    </div>';
+    
 }
 
 ?>
@@ -62,9 +71,14 @@ Click to
 <form action="" method="post" >
 
 <input type="submit" name="edit" value="Edit" >
-<input type="submit" name="logout" value="Logout" >.
+<input type="submit" name="logout" value="Logout" >
+<input type="submit" name="show_all"value="Show All" >.
 </form>
 <?php
+if(!empty($_POST["show_all"])){
+    header("LOCATION: /php_tut/?page=profile");
+}
+
 if(!empty($_POST["edit"])) {
     
     
@@ -100,31 +114,53 @@ if(!empty($_POST["edit"])) {
 <?php
 
 
-//
-
 while($row_comments  = $result_comments->fetch(PDO::FETCH_ASSOC))
 {
-    if($row_comments["user_id"] == 3)
+    if(!empty($_GET['id']))
     {
-        $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
-        $comment_user = $conn->prepare( $comment_user )  ;
-        $comment_user -> execute();
-        $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
-
-        echo    '<div class="comment">
-                            <div class="comment_text">
-                                '.$row_comments["comment"].
-                            '</div> 
-                    <div class="comment_detail">
-                        <div class="comment_username">
-                            by_'; echo ucwords( $comment_user["name"] );
-                            echo '</div>
-                        <div class="comment_date">
-                            '.$row_comments["date"].
-                        '</div>
-                    </div><hr>
-                </div>';
+        if($row_comments["user_id"] == $_GET['id'])
+        {
+            $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
+            $comment_user = $conn->prepare( $comment_user )  ;
+            $comment_user -> execute();
+            $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
+    
+            echo    '<div class="comment">
+                                <div class="comment_text">
+                                    '.$row_comments["comment"].
+                                '</div> 
+                        <div class="comment_detail">
+                            <div class="comment_username">
+                                by_'; echo ucwords( $comment_user["name"] );
+                                echo '</div>
+                            <div class="comment_date">
+                                '.$row_comments["date"].
+                            '</div>
+                        </div><hr>
+                    </div>';
+        }        
     }
+    else{
+        $comment_user = "SELECT `name` FROM `profile` WHERE user_id = ".$row_comments["user_id"];
+            $comment_user = $conn->prepare( $comment_user )  ;
+            $comment_user -> execute();
+            $comment_user = $comment_user->fetch(PDO::FETCH_ASSOC);
+    
+            echo    '<div class="comment">
+                                <div class="comment_text">
+                                    '.$row_comments["comment"].
+                                '</div> 
+                        <div class="comment_detail">
+                            <div class="comment_username">
+                                by_'; echo ucwords( $comment_user["name"] );
+                                echo '</div>
+                            <div class="comment_date">
+                                '.$row_comments["date"].
+                            '</div>
+                        </div><hr>
+                    </div>';
+    } 
+    
     
 }
 ?>
