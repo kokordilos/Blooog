@@ -51,8 +51,11 @@
 }
 
 .profile_info {
+    display: flex;
+    flex-direction: column;
     padding-left: 30px;
-    height: 12%;  
+    height:25%;  
+    overflow-y: auto
 }
 .comment_dashboard {
     background-color: grey;

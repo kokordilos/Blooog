@@ -21,7 +21,7 @@ $sql_comments = "SELECT * FROM `comment` ORDER BY `id`ASC ";
 $result_comments = $conn->prepare($sql_comments);
 $result_comments -> execute();
 
-
+$i=1;
 
 
 if(!empty($_POST["logout"])) {
@@ -40,20 +40,37 @@ if(!empty($_POST["logout"])) {
 
 <?php
 
-
+$array_of_profiles = array();
 
 while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 {
+    if ($_SESSION["id"] == $row_pictures['user_id'])
+    {
+        $array_of_profiles[0] = $row_pictures;
+    }
+    else
+    {
+        $array_of_profiles[$i] =  $row_pictures;
+        $i++;
+    }     
     
+}
+//$i--;
+ksort($array_of_profiles);
+for ($j=0;$j<$i;$j++)
+{
+
     echo '<div class="image_box">
     
-    <a type = "submit" href = "?page=profile&id='. $row_pictures['user_id'] .'">
-    <img  class="profile_img" tabindex="1" src='.$row_pictures['picture'].' >
+    <a type = "submit" href = "?page=profile&id='. $array_of_profiles[$j]['user_id'] .'">
+    <img  class="profile_img" tabindex="1" src='.$array_of_profiles[$j]['picture'].' >
     </a>
     
     </div>';
-    
+   
 }
+
+
 
 ?>
 
@@ -64,10 +81,11 @@ while($row_pictures  = $result_pictures->fetch(PDO::FETCH_ASSOC))
 
 
 <div class="profile_info">
-
+<p>
 Welcome <?php echo ucwords($row_users['name']); ?>,
 You have successfully logged in!<br>
 Click to 
+</p>
 <form action="" method="post" >
 
 <input type="submit" name="edit" value="Edit" >
